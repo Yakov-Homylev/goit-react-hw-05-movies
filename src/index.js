@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "modern-normalize";
 import "./index.css";
-import App from "./App";
+import App from "./components/App";
 
 ReactDOM.render(
   <React.StrictMode>
