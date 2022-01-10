@@ -1,38 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate, Outlet, NavLink } from "react-router-dom";
+import {
+  useParams,
+  useNavigate,
+  Outlet,
+  NavLink,
+  useLocation,
+} from "react-router-dom";
 import { fetchMovieDetails } from "../api/fetchMovieDataBase";
 
 const FULL_IMAGE_PATH = "https://image.tmdb.org/t/p/w500/";
 
-function MoviesDetailsPage() {
+function MoviesDetailsPage(props) {
   const [film, setFilm] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    console.log(id);
-
     fetchMovieDetails(id)
       .then((data) => setFilm(data))
       .catch((error) => console.log(error.message));
   }, [id]);
 
+  const date = new Date(film.release_date);
+
+  const goBack = () => {
+    if (!location.state) {
+      navigate("/");
+      return;
+    }
+    navigate(-1);
+  };
+
   return (
     <div>
-      <button type="button" onClick={() => navigate(-1)}>
+      <button type="button" onClick={goBack}>
         Go back
       </button>
-      <h3>{film.original_title}</h3>
+      <h2>
+        {film.original_title}
+        <span>{`(${date.getFullYear(film.release_date)})`}</span>
+      </h2>
+      <h3>User score: {film.vote_average}</h3>
+      <h3>Overview</h3>
       <p>{film.overview}</p>
       {film.poster_path && (
         <img
           src={`${FULL_IMAGE_PATH}${film.poster_path}`}
           alt={film.title}
           width="300"
+          style={{ marginBottom: "10px" }}
         />
       )}
-      <NavLink to="credits">Credits</NavLink>
-      <NavLink to="reviews">Reviews</NavLink>
+      <NavLink to="credits" style={{ padding: "10px" }}>
+        Credits
+      </NavLink>
+      <NavLink to="reviews" style={{ padding: "10px" }}>
+        Reviews
+      </NavLink>
       <Outlet />
     </div>
   );

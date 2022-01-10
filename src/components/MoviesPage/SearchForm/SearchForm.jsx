@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 function SearchForm({ newSearch }) {
   const onFormSumbit = (e) => {
@@ -14,5 +15,9 @@ function SearchForm({ newSearch }) {
     </form>
   );
 }
+
+SearchForm.propTypes = {
+  newSearch: PropTypes.func,
+};
 
 export default SearchForm;

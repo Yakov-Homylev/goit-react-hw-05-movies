@@ -1,34 +1,77 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import Container from "../Container/Container";
 import AppBar from "../AppBar/AppBar";
-import HomePage from "../../views/HomePage";
-import MoviesPage from "../../views/MoviesPage";
-import MoviesDetailsPage from "../../views/MoviesDetailsPage";
-import MoviesSearchPage from "../../views/MoviesSearchPage";
-import MovieCreditsPage from "../../views/MovieCreditsPage";
-import MovieReviewsPage from "../../views/MovieReviewsPage";
+
+const HomePage = lazy(() => import("../../views/HomePage"));
+const MoviesPage = lazy(() => import("../../views/MoviesPage"));
+const MoviesDetailsPage = lazy(() => import("../../views/MoviesDetailsPage"));
+const MoviesSearchPage = lazy(() => import("../../views/MoviesSearchPage"));
+const MovieCreditsPage = lazy(() => import("../../views/MovieCreditsPage"));
+const MovieReviewsPage = lazy(() => import("../../views/MovieReviewsPage"));
 
 function App() {
-  // API.fetchTrandingMovies().then((data) => console.log(data));
-  // API.fetchMovieByName("spider").then((data) => console.log(data));
-  // API.fetchMovieDetails(557).then((data) => console.log(data));
-  // API.fetchMovieCredits(557).then((data) => console.log(data));
-  // API.fetchMovieReviews(557).then((data) => console.log(data));
-
   return (
     <Container>
       <AppBar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/movies" element={<MoviesPage />}>
-          <Route index path="" element={<MoviesSearchPage />} />
-          <Route path=":id" element={<MoviesDetailsPage />}>
-            <Route path="credits" element={<MovieCreditsPage />} />
-            <Route path="reviews" element={<MovieReviewsPage />} />
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<p>Loading...</p>}>
+              <HomePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/movies"
+          element={
+            <Suspense fallback={<p>Loading...</p>}>
+              <MoviesPage />
+            </Suspense>
+          }>
+          <Route
+            index
+            path=""
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <MoviesSearchPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path=":id"
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <MoviesDetailsPage />
+              </Suspense>
+            }>
+            <Route
+              path="credits"
+              element={
+                <Suspense fallback={<p>Loading...</p>}>
+                  <MovieCreditsPage />
+                </Suspense>
+              }
+            />
+            <Route
+              path="reviews"
+              element={
+                <Suspense fallback={<p>Loading...</p>}>
+                  <MovieReviewsPage />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
-        <Route path="*" element={<HomePage />} />
+        <Route
+          path="*"
+          element={
+            <Suspense fallback={<p>Loading...</p>}>
+              <HomePage />
+            </Suspense>
+          }
+        />
       </Routes>
     </Container>
   );

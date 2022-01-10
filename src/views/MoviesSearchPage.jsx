@@ -23,7 +23,6 @@ function MoviesSearchPage() {
     }
 
     fetchMovieByName(searchWord).then((data) => {
-      console.log(data);
       navigate(`?q=${searchWord}`);
 
       setGallery(data.results);
